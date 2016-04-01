@@ -50,37 +50,62 @@ function checkSpeechReco(SARAH, callback) {
 }
 
 function infogoogle(search, callback) {
-	var url = "https://www.google.fr/search?q=" + encodeURI(search) + "&btnG=Rechercher&gbv=1";
-	console.log('Url Request: ' + url);
 
-	var request = require('request');
-	var cheerio = require('cheerio');
+	var fs = require("fs");
+	var path = require('path');
+ 	//var filePath = path.resolve('%CD%', './plugins/HeureCoucher/heure_coucher.json').replace('\\%CD%', '');
+ 	var filePath = __dirname + "/SaveInfos.json";
+	var file_content;
 
-	var options = {
-		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36',
-		'Accept-Charset': 'utf-8'
-	};
-	
-	request({ 'uri': url, 'headers': options }, function(error, response, html) {
+	file_content = fs.readFileSync(filePath, 'utf8');
+	file_content = JSON.parse(file_content);
 
-    	if (error || response.statusCode != 200) {
-			clearInterval(token);
-			callback({'tts': "L'action a échoué"});
-			return;
-	    }
-        var $ = cheerio.load(html);
+	if(typeof file_content[search] != 'undefined' && file_content[search] != "") {
+		var infos = file_content[search];
+		console.log("Informations: " + infos);
+		callback({'tts': infos });
+		return;
 
-        var infos = $('.g ._o0d ._tXc span').text().trim().replace('Wikipédia', '');
+	} else {
 
-        if(infos == "") {
-        	console.log("Impossible de récupérer les informations sur Google");
+		var url = "https://www.google.fr/search?q=" + encodeURI(search) + "&btnG=Rechercher&gbv=1";
+		console.log('Url Request: ' + url);
 
-        	callback({'tts': "Désolé, je n'ai pas réussi à récupérer d'informations" });
-        } else {
-        	console.log("Informations: " + infos);
+		var request = require('request');
+		var cheerio = require('cheerio');
 
-        	callback({'tts': infos });
-        }
-	    return;
-    });
+		var options = {
+			'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36',
+			'Accept-Charset': 'utf-8'
+		};
+		
+		request({ 'uri': url, 'headers': options }, function(error, response, html) {
+
+	    	if (error || response.statusCode != 200) {
+				clearInterval(token);
+				callback({'tts': "L'action a échoué"});
+				return;
+		    }
+	        var $ = cheerio.load(html);
+
+	        var infos = $('.g ._o0d ._tXc span').text().trim().replace('Wikipédia', '');
+
+	        if(infos == "") {
+	        	console.log("Impossible de récupérer les informations sur Google");
+
+	        	callback({'tts': "Désolé, je n'ai pas réussi à récupérer d'informations" });
+	        } else {
+	        	file_content[search] = infos;
+	        	chaine = JSON.stringify(file_content, null, '\t');
+				fs.writeFile(filePath, chaine, function (err) {
+					console.log("[ GoogleInfo ] Informations enregistrés");
+				});
+
+	        	console.log("Informations: " + infos);
+
+	        	callback({'tts': infos });
+	        }
+		    return;
+	    });
+	}
 }
