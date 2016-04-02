@@ -1,0 +1,9 @@
+{
+	"modules" : { 
+		"GoogleInfo"  : {
+			"description": "Permet de récupérer des informations sur un pays/mots ou autre via Google",
+			"version": "1.0",
+			"auteur": "Jean-Charles Moussé"
+		}
+	}
+}

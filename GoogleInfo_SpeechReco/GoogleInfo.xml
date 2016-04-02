@@ -1,0 +1,23 @@
+<grammar version="1.0" xml:lang="fr-FR" mode="voice" root="ruleGoogleInfo" xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0">
+	<rule id="ruleGoogleInfo" scope="public">
+		<example>Jarvis tu peux me donner des informations sur Google ?</example>
+		<tag>out.action=new Object(); </tag>
+
+		<item>Jarvis</item>
+    
+		<one-of>
+			<item>donne moi des informations sur</item>
+			<item>donne moi des infos sur</item>
+			<item>tu peux me donner des informations sur</item>
+			<item>tu peux me donner des infos sur</item>
+			<item>que sait tu sur</item>
+			<item>que sais tu sur</item>
+			<item>tu sait quoi sur</item>
+			<item>tu sais quoi sur</item>
+		</one-of>
+		
+		<ruleref special="GARBAGE" />
+		
+		<tag>out.action._attributes.uri="http://127.0.0.1:8080/sarah/GoogleInfo";</tag>
+	</rule>
+</grammar>
