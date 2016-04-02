@@ -1,6 +1,8 @@
 ﻿Plugin Informations pour S.A.R.A.H
 ==================================
 
+Plugin pour avoir des informations sur un objet, une entreprise, une ville, pays ou tout autres choses.
+
 Le plugin nécessite tout d'abord Scribe .
 
 Que vous pouvez trouver ici: https://github.com/tilleul/Sarah.Scribe
