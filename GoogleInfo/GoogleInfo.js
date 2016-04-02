@@ -60,7 +60,7 @@ function checkScribe(event, action, callback) {
 function decodeScribe(search, callback) {
 
 	console.log ("Search: " + search);
-	var rgxp = /(donne moi des informations sur|donne moi des infos sur|tu peux me donner des informations sur|tu peux me donner des infos sur|que sait tu sur|que sais tu sur|tu sait quoi sur|tu sais quoi sur) (.+)/i;
+	var rgxp = /(informations sur|infos sur|tu sur|quoi sur) (.+)/i;
 
 	var match = search.match(rgxp);
 	if (!match || match.length <= 1){
@@ -100,6 +100,7 @@ function infogoogle(search, callback) {
 		var cheerio = require('cheerio');
 
 		var options = {
+			'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36',
 			'Accept-Charset': 'utf-8'
 		};
 		
@@ -116,7 +117,7 @@ function infogoogle(search, callback) {
 
 	        if(infos == "") {
 	        	console.log("Impossible de récupérer les informations sur Google");
-	        	ScribeSpeak("Désolé, je n'ai pas réussi à récupérer d'informations");
+	        	ScribeSpeak("Désolé, je n'ai pas réussi à récupérer d'informations", true);
 	        	callback();
 	        } else {
 	        	file_content[search] = infos;
