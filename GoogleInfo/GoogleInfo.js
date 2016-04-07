@@ -77,7 +77,6 @@ function infogoogle(search, callback) {
 
 	var fs = require("fs");
 	var path = require('path');
- 	//var filePath = path.resolve('%CD%', './plugins/HeureCoucher/heure_coucher.json').replace('\\%CD%', '');
  	var filePath = __dirname + "/SaveInfos.json";
 	var file_content;
 
